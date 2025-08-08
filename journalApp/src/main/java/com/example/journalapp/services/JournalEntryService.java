@@ -6,6 +6,7 @@ import com.example.journalapp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,12 +21,18 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
+    @Transactional
     public void saveEntry(JournalEntry journalEntry, String userName) {
-        User user = userService.findUser(userName);
-        journalEntry.setDate(LocalDateTime.now());
-        JournalEntry saved = journalEntryRepository.save(journalEntry);
-        user.getJournalEntry().add(saved);
-        userService.saveEntry(user);
+        try {
+            User user = userService.findUser(userName);
+            journalEntry.setDate(LocalDateTime.now());
+            JournalEntry saved = journalEntryRepository.save(journalEntry);
+            user.getJournalEntry().add(saved);
+            userService.saveEntry(user);
+        }catch (Exception e) {
+            System.out.print(e.getMessage());
+            throw new RuntimeException("Something uncertain happened in JES saveEntry Method.");
+        }
     }
 
     public void saveEntry(JournalEntry journalEntry) {
