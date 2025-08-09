@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/public")
 public class PublicController {
 
     @Autowired
@@ -18,8 +18,7 @@ public class PublicController {
     }
 
     @PostMapping("/create-user")
-    public String createUsers(@RequestBody User user) {
-        userService.saveEntry(user);
-        return null;
+    public void createUsers(@RequestBody User user) {
+        userService.saveNewUser(user);
     }
 }

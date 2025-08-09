@@ -19,7 +19,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void saveEntry(User user) {
+    public void saveNewUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
@@ -28,9 +28,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void saveNewUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Arrays.asList("USER"));
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 
