@@ -19,17 +19,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (username == null || username.trim().isEmpty()) {
             throw new UsernameNotFoundException("Username cannot be null or empty");
         }
-
         User user = userRepository.findByUserName(username.trim());
 
         if (user != null) {
-            if (user.getPassword() == null) {
-                throw new UsernameNotFoundException("User password is null for username: " + username);
-            }
-
-            if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            if (user.getRoles() == null || user.getRoles().isEmpty())
                 throw new UsernameNotFoundException("User has no roles assigned for username: " + username);
-            }
 
             return org.springframework.security.core.userdetails.User.builder()
                     .username(user.getUserName())
