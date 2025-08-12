@@ -30,7 +30,7 @@ public class UserDetailsServiceImplTest {
     }
 
     void loadUserByUsernameTest() {
-        when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(User.builder().username("Raj").password("Raj").roles(new ArrayList<>()).build());
+        when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn((com.example.journalapp.entity.User) User.builder().username("Raj").password("Raj").roles(String.valueOf(new ArrayList<>())).build());
         UserDetails user = userDetailsService.loadUserByUsername("Raj");
         Assertions.assertNotNull(user);
     }
