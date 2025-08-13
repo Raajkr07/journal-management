@@ -1,8 +1,11 @@
 package com.example.journalapp.controller;
 
+import com.example.journalapp.apirespone.WeatherResponse;
+import com.example.journalapp.dto.GreetingResponse;
 import com.example.journalapp.entity.User;
 import com.example.journalapp.repository.UserRepository;
 import com.example.journalapp.services.UserService;
+import com.example.journalapp.services.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +25,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
+    @Autowired
+    private WeatherService weatherService;
+
+    @GetMapping("/get-all-users")
     public List<User> getAllUsers() {
         return userService.getAll();
     }
@@ -53,8 +59,16 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> greetings(@RequestBody User user) {
+    public ResponseEntity<GreetingResponse> greetings() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return new ResponseEntity<>("Hii" + authentication.getName(), HttpStatus.NO_CONTENT);
+        WeatherResponse response = weatherService.getWeather("Mumbai");
+        String greeting = "";
+
+        if (response != null && response.getCurrent() != null) {
+            greeting = " Weather feels like: " + response.getCurrent().getFeelsLike() + "°C.";
+        }
+
+        String message = "Hi " + authentication.getName() + ", " + greeting;
+        return new ResponseEntity<>(new GreetingResponse(message), HttpStatus.OK);
     }
 }
