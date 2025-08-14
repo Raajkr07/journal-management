@@ -5,17 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+@Service
 public class WeatherService {
 
     @Value("${weather.api.key}")
     private String apiKey;
+//    private static final String apiKey = "API_KEY_HERE";
 
     @Value("${weather.api.url}")
     private String apiUrl;
+    //    private static final String url = "http://api.weatherstack.com/current?access_key=YOUR_ACCESS_KEY&query=CITY";
 
     @Autowired
     private RestTemplate restTemplate;
