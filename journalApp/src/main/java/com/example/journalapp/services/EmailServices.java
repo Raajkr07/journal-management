@@ -9,7 +9,7 @@ public class EmailServices {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendMain(String to, String subject, String body) {
+    public void sendMail(String to, String subject, String body) {
 
         try {
             SimpleMailMessage mail = new SimpleMailMessage();
