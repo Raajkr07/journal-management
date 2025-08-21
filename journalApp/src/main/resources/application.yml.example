@@ -1,4 +1,8 @@
 spring:
+  redis:
+    host: localhost
+    port: 6379
+
   data:
     mongodb:
       uri: YOUR_MONGODB_ATLAS_URI
