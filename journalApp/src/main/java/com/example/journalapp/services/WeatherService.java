@@ -15,6 +15,9 @@ public class WeatherService {
     @Autowired
     private AppCache appCache;
 
+    @Autowired
+    private RedisService redisService;
+
     @Value("${weather.api.key}")
     private String apiKey;
 //    private static final String apiKey = "API_KEY_HERE";
@@ -23,8 +26,19 @@ public class WeatherService {
     private RestTemplate restTemplate;
 
     public WeatherResponse getWeather(String city) {
-        String replacedUrl = appCache.APP_CACHE.get("weather_api").replace("<city>", city).replace("<apikey>", apiKey);
-        ResponseEntity<WeatherResponse> response = restTemplate.exchange(replacedUrl, HttpMethod.GET, null, WeatherResponse.class);
-        return response.getBody();
+        WeatherResponse weatherResponse = redisService.getKey("weather_of_" + city, WeatherResponse.class);
+
+        if (weatherResponse != null)
+            return weatherResponse;
+        else {
+            String replacedUrl = appCache.APP_CACHE.get("weather_api").replace("<city>", city).replace("<apikey>", apiKey);
+            ResponseEntity<WeatherResponse> response = restTemplate.exchange(replacedUrl, HttpMethod.GET, null, WeatherResponse.class);
+            WeatherResponse body = response.getBody();
+
+            if (body != null)
+                redisService.setKey("weather_of_" + city, body, 300l);
+
+            return body;
+        }
     }
 }
