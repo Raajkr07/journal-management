@@ -4,6 +4,39 @@ spring:
     port: 1564
     password: *
 
+    #  kafka config
+    kafka:
+      bootstrap-servers: pkc-l7pr2.ap-south-1.aws.confluent.cloud:9092
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      consumer:
+        group-id: weekly-sentiment-group
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        properties:
+          spring:
+            json:
+              trusted:
+                packages: com.example.journalapp.model
+      properties:
+        security:
+          protocol: SASL_SSL
+        sasl:
+          mechanism: PLAIN
+          jaas:
+            config: >
+              org.apache.kafka.common.security.plain.PlainLoginModule required
+              username="*************"
+              password="***********************";
+        session:
+          timeout:
+            ms: 45000
+
+    client:
+      id: ccloud-springboot-client-48357931-a5ba-4728-a180-c6422229e61f
+
+
   data:
     mongodb:
       uri: YOUR_MONGODB_ATLAS_URI
