@@ -4,6 +4,7 @@ import com.example.journalapp.entity.User;
 import com.example.journalapp.services.UserDetailsServiceImpl;
 import com.example.journalapp.services.UserService;
 import com.example.journalapp.utils.JwtUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public")
+@Tag(name = "Public APIs")
 public class PublicController {
 
     @Autowired
