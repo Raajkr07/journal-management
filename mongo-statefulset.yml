@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: journal-mongodb
+  namespace: journal-app
+spec:
+  serviceName: journal-mongodb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: journal-mongodb
+  template:
+    metadata:
+      labels:
+        app: journal-mongodb
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:6.0
+          imagePullPolicy: IfNotPresent
+          command: ["mongod", "--bind_ip_all"]
+          ports:
+            - containerPort: 27017
+              name: mongo
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "admin"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "password123"
+            - name: MONGO_INITDB_DATABASE
+              value: "journalDB"
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+      volumes:
+        - name: mongo-data
+          emptyDir: {}
+

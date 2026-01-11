@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: journal-mongodb
+  namespace: journal-app
+spec:
+  clusterIP: None        # Headless service
+  selector:
+    app: journal-mongodb
+  ports:
+    - port: 27017
+      targetPort: 27017
+      name: mongo
+
