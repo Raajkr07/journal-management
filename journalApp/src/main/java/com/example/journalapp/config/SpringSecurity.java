@@ -35,7 +35,14 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(request -> request
+        return http
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(
+                                "/actuator/health",
+                                "/actuator/health/**",
+                                "/journal/actuator/health",
+                                "/journal/actuator/health/**"
+                        ).permitAll()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
@@ -44,7 +51,9 @@ public class SpringSecurity {
                         ).permitAll()
                         .requestMatchers("/journal/**", "/user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+
+                        .anyRequest().authenticated()
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
