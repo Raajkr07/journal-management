@@ -1,0 +1,49 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*.iml
+.DS_Store
+
+# Build artifacts
+target/
+*.class
+*.jar
+*.war
+*.rar
+*.zip
+
+# Maven
+.m2/
+
+# Documentation
+README.md
+docs/
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Node modules (if frontend exists)
+node_modules/
+npm-debug.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+logs/
+*.log
