@@ -2,10 +2,10 @@ spring:
   application:
     name: journal-app
 
-  # MongoDB
   data:
     mongodb:
-      uri: ${SPRING_MONGODB_URI:mongodb://admin:password123@mongodb:27017/journal_db?authSource=admin}
+      uri: ${SPRING_MONGODB_URI:mongodb+srv://admin:password123@ac-sccgffg-shard-00-00.pzotgd0.mongodb.net/journalDB?retryWrites=true&w=majority&tls=true}
+      database: ${SPRING_MONGODB_DB:journalDB}
       auto-index-creation: true
 
   # Redis
@@ -54,7 +54,7 @@ spring:
   weather:
     api:
       key: ${WEATHER_API_KEY:af5b0cbddf0364b06f1dc0a4ee3f7984}
-      url: ${WEATHER_API_URL:http://api.weatherstack.com/current?access_key=YOUR_ACCESS_KEY&query=CITY}
+      url: ${WEATHER_API_URL:http://api.weatherstack.com/current?access_key=${WEATHER_API_KEY}&query=CITY}
 
   # JPA/Hibernate
   jpa:
@@ -107,3 +107,8 @@ logging:
 jwt:
   secret: ${JWT_SECRET:default_secret_key_change_in_production}
   expiration: ${JWT_EXPIRATION:86400000}
+
+mongodb:
+  ssl:
+    enabled: true
+    invalid-hostname-allowed: false
