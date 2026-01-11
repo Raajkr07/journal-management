@@ -35,3 +35,9 @@ build/
 # Ignore real config with secrets
 **/src/main/resources/application.properties
 **/src/main/resources/application.yml
+
+#docker files
+.env
+.env.local
+logs/
+trivy-results.json
