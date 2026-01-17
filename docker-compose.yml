@@ -18,7 +18,7 @@ services:
     networks:
       - journal-network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -36,12 +36,12 @@ services:
     networks:
       - journal-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "redis_password", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Kafka Service
+  # Kafka Services
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: journal-zookeeper
@@ -70,11 +70,12 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     ports:
+      - "29092:29092"
       - "9092:9092"
     networks:
       - journal-network
     healthcheck:
-      test: kafka-broker-api-versions.sh --bootstrap-server kafka:29092
+      test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server", "kafka:29092"]
       interval: 10s
       timeout: 5s
       retries: 5
